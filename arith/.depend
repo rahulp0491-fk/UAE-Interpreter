@@ -11,5 +11,5 @@ parser.cmo: support.cmi syntax.cmi parser.cmi
 parser.cmx: support.cmx syntax.cmx parser.cmi 
 support.cmo: support.cmi 
 support.cmx: support.cmi 
-syntax.cmo: support.cmi syntax.cmi 
+syntax.cmo: support.cmi syntax.cmi
 syntax.cmx: support.cmx syntax.cmi 
