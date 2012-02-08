@@ -7,4 +7,5 @@ iszero (pred (succ (succ 0)));
 succ (succ 0);
 if (iszero 0) then (iszero (succ 0)) else (iszero 0);
 succ (succ (pred 0));
+2
 -5;
