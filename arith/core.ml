@@ -27,11 +27,11 @@ let rec eval1 t = match t with
       t3
 *)
 (* -------------NEW OPTIONS TO EVALUATE THE TERMS BEFORE THE GUARD IN TmIf------------------ *)
-    TmIf(_,TmTrue(_),v1,v2) when (isval v1=true||isval v1=false)&&(isval v2=true||isval v2=false) ->
+    TmIf(_,TmTrue(_),v1,v2) when isval v1=true && isval v2=true ->
       v1
-  | TmIf(_,TmFalse(_),v1,v2) when (isval v1=true||isval v1=false)&&(isval v2=true||isval v2=false) ->
+  | TmIf(_,TmFalse(_),v1,v2) when isval v1=true && isval v2=true ->
       v2
-  | TmIf(fi,t1,v1,v2) when (isval v1=true||isval v1=false)&&(isval v2=true||isval v2=false) ->
+  | TmIf(fi,t1,v1,v2) when isval v1=true && isval v2=true ->
       let t1' = eval1 t1 in 
       TmIf(fi,t1',v1,v2)
   | TmIf(fi,t1,t2,t3) ->
