@@ -13,7 +13,7 @@ type term =
   | TmSucc of info * term
   | TmPred of info * term
   | TmIsZero of info * term
-  | TmNot of info * term (* ------------ADDED NODE FOR NOT--------------- *)
+  | TmNot of info * term (* ------------NODE FOR NOT--------------- *)
 
 type command =
   | Eval of info * term
@@ -29,7 +29,7 @@ let tmInfo t = match t with
   | TmSucc(fi,_) -> fi
   | TmPred(fi,_) -> fi
   | TmIsZero(fi,_) -> fi 
-  | TmNot(fi,_) -> fi (* -------------------ADDED OPTION TO EXTRACT INFO FROM NOT----------------- *)
+  | TmNot(fi,_) -> fi (* -------------------OPTION TO EXTRACT INFO FROM NOT----------------- *)
 
 (* ---------------------------------------------------------------------- *)
 (* Printing *)
@@ -71,12 +71,11 @@ and printtm_AppTerm outer t = match t with
        pr "pred "; printtm_ATerm false t1
   | TmIsZero(_,t1) ->
        pr "iszero "; printtm_ATerm false t1
-(* ----------------------------ADDED OPTION TO PRINT NOT---------------------------- *)
+(* ----------------------------OPTION TO PRINT NOT---------------------------- *)
   | TmNot(_, t1) ->
        pr "not "; printtm_ATerm false t1
-(* --------------------------------------------------------------------------------- *)
+(* --------------------------------------------------------------------------- *)
   | t -> printtm_ATerm outer t
-
 
 and printtm_ATerm outer t = match t with
     TmTrue(_) -> pr "true"
@@ -87,8 +86,17 @@ and printtm_ATerm outer t = match t with
      let rec f n t = match t with
          TmZero(_) -> pr (string_of_int n)
        | TmSucc(_,s) -> f (n+1) s
+       | TmPred(_,s) -> f (n-1) s
        | _ -> (pr "(succ "; printtm_ATerm false t1; pr ")")
      in f 1 t1
+(* ------------------------OPTION TO PRINT NEGATIVE NUMBERS-------------------------- *)
+  | TmPred(_,t1) ->
+     let rec g n t = match t with
+         TmZero(_) -> pr (string_of_int n)
+       | TmPred(_,s) -> g (n-1) s
+       | _ -> (pr "(pred "; printtm_ATerm false t1; pr ")")
+     in g (-1) t1
+(* ---------------------------------------------------------------------------------- *)
   | t -> pr "("; printtm_Term outer t; pr ")"
 
 let printtm t = printtm_Term true t 

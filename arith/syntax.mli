@@ -12,7 +12,7 @@ type term =
   | TmSucc of info * term
   | TmPred of info * term
   | TmIsZero of info * term
-  | TmNot of info * term (* --------------ADDED NODE FOR NOT---------------- *)
+  | TmNot of info * term (* --------------NODE FOR NOT---------------- *)
 
 type command =
   | Eval of info * term

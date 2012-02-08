@@ -7,6 +7,7 @@
 open Support.Error
 open Support.Pervasive
 open Syntax
+
 %}
 
 /* ---------------------------------------------------------------------- */
@@ -76,7 +77,7 @@ open Syntax
 %token <Support.Error.info> TRIANGLE
 %token <Support.Error.info> USCORE
 %token <Support.Error.info> VBAR
-%token <Support.Error.info> NOT /* ------------ADDED TOKEN FOR NOT--------------- */
+%token <Support.Error.info> NOT /* ------------TOKEN FOR NOT--------------- */
 
 /* ---------------------------------------------------------------------- */
 /* The starting production of the generated parser is the syntactic class
@@ -93,6 +94,7 @@ open Syntax
 
 /* The top level of a file is a sequence of commands, each terminated
    by a semicolon. */
+
 toplevel :
     EOF
       { [] }
@@ -121,10 +123,11 @@ AppTerm :
       { TmPred($1, $2) }
   | ISZERO ATerm
       { TmIsZero($1, $2) }
-/* --------------------------ADDED TERM FOR NOT---------------------- */
+/* --------------------------TERM FOR NOT---------------------- */
   | NOT ATerm
       { TmNot($1, $2) }
 /* ------------------------------------------------------------------ */
+
 /* Atomic terms are ones that never require extra parentheses */
 ATerm :
     LPAREN Term RPAREN  
@@ -133,11 +136,13 @@ ATerm :
       { TmTrue($1) }
   | FALSE
       { TmFalse($1) }
+/*-----------ADDED OPTION TO INTERPRET NEGATIVE NUMBERS AS INTV--------*/
   | INTV
       { let rec f n = match n with
-              0 -> TmZero($1.i)
-            | n -> TmSucc($1.i, f (n-1))
+              0           -> TmZero($1.i)
+            | n when (n>0)-> TmSucc($1.i, f (n-1)) 
+            | _           -> TmPred($1.i, f (n+1)) 
           in f $1.v }
+/*---------------------------------------------------------------------*/
+%%
 
-
-/*   */

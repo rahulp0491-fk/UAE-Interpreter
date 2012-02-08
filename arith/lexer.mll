@@ -19,7 +19,7 @@ let reservedWords = [
   ("succ", fun i -> Parser.SUCC i);
   ("pred", fun i -> Parser.PRED i);
   ("iszero", fun i -> Parser.ISZERO i);
-  ("not", fun i -> Parser.NOT i); (* ----------ADDED REGEX FOR NOT--------------- *)
+  ("not", fun i -> Parser.NOT i); (* ----------REGEX FOR NOT--------------- *)
   
   (* Symbols *)
   ("_", fun i -> Parser.USCORE i);
@@ -141,9 +141,10 @@ rule main = parse
 | "# line " ['0'-'9']+
     { lineno := extractLineno (text lexbuf) 7 - 1; getFile lexbuf }
 
-| ['0'-'9']+
+(* -------REGEX TO IDENTIFY NEGATIVE NUMBERS-------- *)
+| ('-')? ['0'-'9']+
     { Parser.INTV{i=info lexbuf; v=int_of_string (text lexbuf)} }
-
+(* ------------------------------------------------- *)
 | ['0'-'9']+ '.' ['0'-'9']+
     { Parser.FLOATV{i=info lexbuf; v=float_of_string (text lexbuf)} }
 

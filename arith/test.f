@@ -1,10 +1,10 @@
 /* Examples for testing */
 
 true;
-if false then true else false; 
-
-0; 
-succ (pred 0);
+if true then true else false;  
+succ (pred (pred 0));
 iszero (pred (succ (succ 0))); 
-pred 0;
-not (if true then false else true);
+succ (succ 0);
+if (iszero 0) then (iszero (succ 0)) else (iszero 0);
+succ (succ (pred 0));
+-5;
