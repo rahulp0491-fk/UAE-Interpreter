@@ -71,10 +71,10 @@ and printtm_AppTerm outer t = match t with
        pr "pred "; printtm_ATerm false t1
   | TmIsZero(_,t1) ->
        pr "iszero "; printtm_ATerm false t1
-(* ----------------------------OPTION TO PRINT NOT---------------------------- *)
+(* ---------------------------OPTION TO PRINT NOT---------------------------- *)
   | TmNot(_, t1) ->
        pr "not "; printtm_ATerm false t1
-(* --------------------------------------------------------------------------- *)
+(* -------------------------------------------------------------------------- *)
   | t -> printtm_ATerm outer t
 
 and printtm_ATerm outer t = match t with
