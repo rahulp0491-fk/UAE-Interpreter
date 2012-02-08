@@ -52,7 +52,7 @@ let rec eval1 t = match t with
   | TmSucc(fi,t1) ->
       let t1' = eval1 t1 in
       TmSucc(fi, t1')
-(* -----------------------------REMOVED E-PREDZERO---------------------------------- )
+(* -----------------------------REMOVED E-PREDZERO--------------------------------- )
   | TmPred(_,TmZero(_)) ->
       TmZero(dummyinfo)
 *)
@@ -69,6 +69,13 @@ let rec eval1 t = match t with
   | TmIsZero(fi,t1) ->
       let t1' = eval1 t1 in
       TmIsZero(fi, t1')
+(* ----------------------------EVALUATION FOR INCR--------------------------------- *)
+  | TmIncr(fi, t1) when isnumericval t1 ->
+      TmSucc(fi, t1)
+  | TmIncr(fi, t1) ->
+      let t1' = eval1 t1 in
+      TmIncr(fi, t1')
+(* -------------------------------------------------------------------------------- *)
   | _ -> 
       raise NoRuleApplies
 

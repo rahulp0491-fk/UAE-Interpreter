@@ -31,6 +31,7 @@ open Syntax
 %token <Support.Error.info> SUCC
 %token <Support.Error.info> PRED
 %token <Support.Error.info> ISZERO
+%token <Support.Error.info> INCR
 
 /* Identifier and constant value tokens */
 %token <string Support.Error.withinfo> UCID  /* uppercase-initial */
@@ -38,6 +39,8 @@ open Syntax
 %token <int Support.Error.withinfo> INTV
 %token <float Support.Error.withinfo> FLOATV
 %token <string Support.Error.withinfo> STRINGV
+%token <Support.Error.info> NOT             /* ------------TOKEN FOR NOT--------------- */
+%token <Support.Error.info> INCR            /* ------------TOKEN FOR INCR-------------- */
 
 /* Symbolic tokens */
 %token <Support.Error.info> APOSTROPHE
@@ -77,7 +80,7 @@ open Syntax
 %token <Support.Error.info> TRIANGLE
 %token <Support.Error.info> USCORE
 %token <Support.Error.info> VBAR
-%token <Support.Error.info> NOT /* ------------TOKEN FOR NOT--------------- */
+
 
 /* ---------------------------------------------------------------------- */
 /* The starting production of the generated parser is the syntactic class
@@ -126,7 +129,12 @@ AppTerm :
 /* --------------------------TERM FOR NOT---------------------- */
   | NOT ATerm
       { TmNot($1, $2) }
-/* ---------------------------------------------------------------- */
+/* ------------------------------------------------------------ */
+
+/* --------------------------TERM FOR INCR----------------------*/
+  | INCR ATerm
+      { TmIncr($1, $2) }
+/* -------------------------------------------------------------*/
 
 /* Atomic terms are ones that never require extra parentheses */
 ATerm :

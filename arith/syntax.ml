@@ -14,6 +14,7 @@ type term =
   | TmPred of info * term
   | TmIsZero of info * term
   | TmNot of info * term (* ------------NODE FOR NOT--------------- *)
+  | TmIncr of info * term
 
 type command =
   | Eval of info * term
@@ -30,6 +31,7 @@ let tmInfo t = match t with
   | TmPred(fi,_) -> fi
   | TmIsZero(fi,_) -> fi 
   | TmNot(fi,_) -> fi (* -------------------OPTION TO EXTRACT INFO FROM NOT----------------- *)
+  | TmIncr(fi,_) -> fi
 
 (* ---------------------------------------------------------------------- *)
 (* Printing *)
@@ -74,6 +76,11 @@ and printtm_AppTerm outer t = match t with
 (* ---------------------------OPTION TO PRINT NOT---------------------------- *)
   | TmNot(_, t1) ->
        pr "not "; printtm_ATerm false t1
+(* -------------------------------------------------------------------------- *)
+
+(* ---------------------------OPTION TO PRINT INCR--------------------------- *)
+  | TmIncr(_, t1) ->
+       pr "incr"; printtm_ATerm false t1
 (* -------------------------------------------------------------------------- *)
   | t -> printtm_ATerm outer t
 
