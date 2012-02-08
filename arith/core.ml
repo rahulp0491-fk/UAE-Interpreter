@@ -3,7 +3,7 @@ open Syntax
 open Support.Error
 open Support.Pervasive
 
-(* ------------------------   EVALUATION  ------------------------ *)
+(* ------------------------   EVALUATION  ----------------------- *)
 
 exception NoRuleApplies
 
