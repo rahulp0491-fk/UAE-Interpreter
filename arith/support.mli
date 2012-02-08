@@ -4,7 +4,7 @@
    in the typechecker/evaluator. 
 *)
 
-(* ------------------------------------------------------------------------ *)
+(* ----------------------------------------------------------------------- *)
 (* Some pervasive abbreviations -- opened everywhere by convention *)
 
 module Pervasive : sig
