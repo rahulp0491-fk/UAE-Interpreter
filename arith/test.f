@@ -9,3 +9,5 @@ if (iszero 0) then (iszero (succ 0)) else (iszero 0);
 succ (succ (pred 0));
 2;
 -5;
+incr (pred (pred 0));
+incr 2;
