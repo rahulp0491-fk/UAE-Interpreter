@@ -31,7 +31,6 @@ open Syntax
 %token <Support.Error.info> SUCC
 %token <Support.Error.info> PRED
 %token <Support.Error.info> ISZERO
-%token <Support.Error.info> INCR
 
 /* Identifier and constant value tokens */
 %token <string Support.Error.withinfo> UCID  /* uppercase-initial */
@@ -41,6 +40,7 @@ open Syntax
 %token <string Support.Error.withinfo> STRINGV
 %token <Support.Error.info> NOT             /* ------------TOKEN FOR NOT--------------- */
 %token <Support.Error.info> INCR            /* ------------TOKEN FOR INCR-------------- */
+%token <Support.Error.info> AND
 
 /* Symbolic tokens */
 %token <Support.Error.info> APOSTROPHE
@@ -134,6 +134,11 @@ AppTerm :
 /* --------------------------TERM FOR INCR----------------------*/
   | INCR ATerm
       { TmIncr($1, $2) }
+/* -------------------------------------------------------------*/
+
+/* --------------------------TERM FOR AND----------------------*/
+  | AND ATerm Aterm
+      { TmAnd($1, $2, $3) }
 /* -------------------------------------------------------------*/
 
 /* Atomic terms are ones that never require extra parentheses */

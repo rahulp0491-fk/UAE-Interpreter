@@ -13,8 +13,9 @@ type term =
   | TmSucc of info * term
   | TmPred of info * term
   | TmIsZero of info * term
-  | TmNot of info * term (* ------------NODE FOR NOT--------------- *)
+  | TmNot of info * term 
   | TmIncr of info * term
+  | TmAnd of info * term * term
 
 type command =
   | Eval of info * term
@@ -32,6 +33,7 @@ let tmInfo t = match t with
   | TmIsZero(fi,_) -> fi 
   | TmNot(fi,_) -> fi (* -------------------OPTION TO EXTRACT INFO FROM NOT----------------- *)
   | TmIncr(fi,_) -> fi
+  | TmAnd(fi,_,_) -> fi
 
 (* ---------------------------------------------------------------------- *)
 (* Printing *)
@@ -73,6 +75,11 @@ and printtm_AppTerm outer t = match t with
        pr "pred "; printtm_ATerm false t1
   | TmIsZero(_,t1) ->
        pr "iszero "; printtm_ATerm false t1
+(* ---------------------------OPTION TO PRINT AND---------------------------- *)
+  | TmAnd(_,t1,t2) ->
+       pr "and "; printtm_ATerm false t1; printtm_ATerm false t2
+(* -------------------------------------------------------------------------- *)
+
 (* ---------------------------OPTION TO PRINT NOT---------------------------- *)
   | TmNot(_, t1) ->
        pr "not "; printtm_ATerm false t1

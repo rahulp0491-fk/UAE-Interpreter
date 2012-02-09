@@ -14,6 +14,7 @@ type term =
   | TmIsZero of info * term
   | TmNot of info * term             (* --------------NODE FOR NOT--------------- *)
   | TmIncr of info * term            (* --------------NODE FOR INCR-------------- *)
+  | TmAnd of info * term * term      (* --------------NODE FOR AND--------------- *)
 
 type command =
   | Eval of info * term

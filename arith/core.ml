@@ -19,6 +19,11 @@ let rec isval t = match t with
   | t when isnumericval t  -> true
   | _ -> false
 
+let isValBool t = match t with 
+    TmTrue(_)   -> true
+  | TmFalse(_)  -> true
+  | _           -> false
+
 let rec eval1 t = match t with
 (*-----------REMOVED E-IFTRUE AND E-IFFALSE-----------------------------------------------------)
     TmIf(_,TmTrue(_),t2,t3) ->
@@ -75,6 +80,23 @@ let rec eval1 t = match t with
   | TmIncr(fi, t1) ->
       let t1' = eval1 t1 in
       TmIncr(fi, t1')
+(* -------------------------------------------------------------------------------- *)
+| TmAnd(fi,TmTrue(_),v2) when isValBool v2 ->
+      v2
+  | TmAnd(fi,TmFalse(_),v2) when isValBool v2 ->
+      TmFalse(dummyinfo)
+  | TmAnd(fi,v1,TmTrue(_)) when isValBool v1 ->
+      v1
+  | TmAnd(fi,v1,TmFalse(_)) when isValBool v1 ->
+      TmFalse(dummyinfo)
+  | TmAnd(fi,v1,t2) when isValBool v1 ->
+      let t2' = eval1 t2 in
+      TmAnd(fi,v1,t2')
+  | TmAnd(fi,t1,t2) ->
+      let t1' = eval1 t1 in
+      TmAnd(fi,t1',t2)
+(* ----------------------------EVALUATION FOR AND--------------------------------- *)
+
 (* -------------------------------------------------------------------------------- *)
   | _ -> 
       raise NoRuleApplies

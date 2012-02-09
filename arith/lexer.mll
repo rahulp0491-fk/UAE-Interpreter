@@ -21,6 +21,7 @@ let reservedWords = [
   ("iszero", fun i -> Parser.ISZERO i);
   ("not", fun i -> Parser.NOT i);            (* ----------REGEX FOR NOT--------------- *)
   ("incr", fun i -> Parser.INCR i);          (* ----------REGEX FOR INCR-------------- *)
+  ("and", fun i -> Parser.AND i);            (* ----------REGEX FOR AND--------------- *)
   
   (* Symbols *)
   ("_", fun i -> Parser.USCORE i);
