@@ -11,3 +11,4 @@ succ (succ (pred 0));
 -5;
 incr (pred (pred 0));
 incr 2;
+and (iszero 0) (iszero (succ 0));
