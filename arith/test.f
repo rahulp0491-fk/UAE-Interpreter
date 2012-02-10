@@ -12,3 +12,4 @@ succ (succ (pred 0));
 incr (pred (pred 0));
 incr 2;
 and (iszero 0) (iszero (succ 0));
+switch succ (pred (succ 0)) case 0: succ 0 case succ 0: succ (succ 0) ;
