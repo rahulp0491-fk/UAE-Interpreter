@@ -80,6 +80,8 @@ let rec eval1 t = match t with
       TmTrue(dummyinfo)
   | TmIsZero(_,TmSucc(_,nv1)) when (isnumericval nv1) ->
       TmFalse(dummyinfo)
+  | TmIsZero(_,TmPred(_,nv1)) when (isnumericval nv1) ->
+      TmFalse(dummyinfo)
   | TmIsZero(fi,t1) ->
       let t1' = eval1 t1 in
       TmIsZero(fi, t1')
