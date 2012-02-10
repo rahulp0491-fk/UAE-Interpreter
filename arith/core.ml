@@ -25,13 +25,14 @@ let isValBool t = match t with
   | _           -> false
 
 let rec eval1 t = match t with
-(*-----------REMOVED E-IFTRUE AND E-IFFALSE-----------------------------------------------------)
     TmIf(_,TmTrue(_),t2,t3) ->
       t2
   | TmIf(_,TmFalse(_),t2,t3) ->
       t3
-*)
-(* -------------NEW OPTIONS TO EVALUATE THE TERMS BEFORE THE GUARD IN TmIf------------------ *)
+  | TmIf(fi,t1,t2,t3) ->
+      let t1' = eval1 t1 in
+      TmIf(fi,t1',t2,t3)
+(* -------------NEW OPTIONS TO EVALUATE THE TERMS BEFORE THE GUARD IN TmIf------------------ )
     TmIf(_,TmTrue(_),v1,v2) when isval v1=true && isval v2=true ->
       v1
   | TmIf(_,TmFalse(_),v1,v2) when isval v1=true && isval v2=true ->
@@ -42,7 +43,7 @@ let rec eval1 t = match t with
   | TmIf(fi,t1,t2,t3) ->
       let t2' = eval1 t2 and t3' = eval1 t3 in
       TmIf(fi, t1, t2', t3')
-(* ----------------------------------------------------------------------------------------- *)
+( ----------------------------------------------------------------------------------------- *)
 
 (* -----------------------------EVALUATION FOR NOT--------------------------------- *)
   | TmNot(_, TmTrue(_)) ->
