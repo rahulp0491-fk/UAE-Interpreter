@@ -12,9 +12,10 @@ type term =
   | TmSucc of info * term
   | TmPred of info * term
   | TmIsZero of info * term
-  | TmNot of info * term             (* --------------NODE FOR NOT--------------- *)
-  | TmIncr of info * term            (* --------------NODE FOR INCR-------------- *)
-  | TmAnd of info * term * term      (* --------------NODE FOR AND--------------- *)
+  | TmNot of info * term                    (* --------------NODE FOR NOT--------------- *)
+  | TmIncr of info * term                   (* --------------NODE FOR INCR-------------- *)
+  | TmAnd of info * term * term             (* --------------NODE FOR AND--------------- *)
+  | TmSwitch of info * term * term * term   (* --------------NODE FOR SWITCH------------ *)
 
 type command =
   | Eval of info * term

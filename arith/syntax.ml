@@ -16,6 +16,7 @@ type term =
   | TmNot of info * term 
   | TmIncr of info * term
   | TmAnd of info * term * term
+  | TmSwitch of info * term * term * term
 
 type command =
   | Eval of info * term
@@ -34,6 +35,7 @@ let tmInfo t = match t with
   | TmNot(fi,_) -> fi (* -------------------OPTION TO EXTRACT INFO FROM NOT----------------- *)
   | TmIncr(fi,_) -> fi
   | TmAnd(fi,_,_) -> fi
+  | TmSwitch(fi,_,_,_) -> fi
 
 (* ---------------------------------------------------------------------- *)
 (* Printing *)
@@ -66,6 +68,17 @@ let rec printtm_Term outer t = match t with
        printtm_Term false t2;
        print_space();
        pr "else ";
+       printtm_Term false t3;
+       cbox()
+  | TmSwitch(fi, t1, t2, t3) ->
+       obox0();
+       pr "switch ";
+       printtm_Term false t1;
+       print_space();
+       pr "case 0: ";
+       printtm_Term false t2;
+       print_space();
+       pr "case (succ 0): ";
        printtm_Term false t3;
        cbox()
   | t -> printtm_AppTerm outer t

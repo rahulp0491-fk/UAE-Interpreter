@@ -40,7 +40,9 @@ open Syntax
 %token <string Support.Error.withinfo> STRINGV
 %token <Support.Error.info> NOT             /* ------------TOKEN FOR NOT--------------- */
 %token <Support.Error.info> INCR            /* ------------TOKEN FOR INCR-------------- */
-%token <Support.Error.info> AND
+%token <Support.Error.info> AND             /* ------------TOKEN FOR AND--------------- */
+%token <Support.Error.info> SWITCH          /* ------------TOKEN FOR SWITCH------------ */
+%token <Support.Error.info> CASE            /* ------------TOKEN FOR CASE-------------- */
 
 /* Symbolic tokens */
 %token <Support.Error.info> APOSTROPHE
@@ -116,6 +118,19 @@ Term :
       { $1 }
   | IF Term THEN Term ELSE Term
       { TmIf($1, $2, $4, $6) }
+/*-------------------------TERM FOR SWITCH-CASE----------------*/
+  | SWITCH Term CASE Zero COLON Term CASE SUCC Zero COLON Term
+      { TmSwitch($1, $2, $6, $11) }
+/*-------------------------------------------------------------*/
+
+Zero :
+   INTV
+       { 
+        let f n = match n with
+              0           -> TmZero($1.i)
+            | _           -> TmFalse($1.i)      (* ----JUST TO MAKE IT EXHAUSTIVE---- *)
+        in f $1.v
+       }
 
 AppTerm :
     ATerm
@@ -151,11 +166,13 @@ ATerm :
       { TmFalse($1) }
 /*-----------ADDED OPTION TO INTERPRET NEGATIVE NUMBERS AS INTV--------*/
   | INTV
-      { let rec f n = match n with
+       { 
+       let rec f n = match n with
               0           -> TmZero($1.i)
             | n when (n>0)-> TmSucc($1.i, f (n-1)) 
             | _           -> TmPred($1.i, f (n+1)) 
-          in f $1.v }
+        in f $1.v 
+        }
 /*---------------------------------------------------------------------*/
 %%
 

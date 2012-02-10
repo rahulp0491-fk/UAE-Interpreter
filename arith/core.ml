@@ -8,21 +8,29 @@ open Support.Pervasive
 exception NoRuleApplies
 
 let rec isnumericval t = match t with
-    TmZero(_) -> true
-  | TmSucc(_,t1) -> isnumericval t1
-  | TmPred(_,t1) -> isnumericval t1
+    TmZero(_)              -> true
+  | TmSucc(_,t1)           -> isnumericval t1
+  | TmPred(_,t1)           -> isnumericval t1
   | _ -> false
 
 let rec isval t = match t with
-    TmTrue(_)  -> true
-  | TmFalse(_) -> true
+    TmTrue(_)              -> true
+  | TmFalse(_)             -> true
   | t when isnumericval t  -> true
   | _ -> false
 
+let isValZero t = match t with 
+    TmZero(_)              -> true
+  | _                      -> false
+
+let isValSuccZero t = match t with 
+    TmSucc(_,t1) when isValZero t1 -> true
+  | _                              -> false
+
 let isValBool t = match t with 
-    TmTrue(_)   -> true
-  | TmFalse(_)  -> true
-  | _           -> false
+    TmTrue(_)              -> true
+  | TmFalse(_)             -> true
+  | _                      -> false
 
 let rec eval1 t = match t with
     TmIf(_,TmTrue(_),t2,t3) ->
@@ -82,7 +90,9 @@ let rec eval1 t = match t with
       let t1' = eval1 t1 in
       TmIncr(fi, t1')
 (* -------------------------------------------------------------------------------- *)
-| TmAnd(fi,TmTrue(_),v2) when isValBool v2 ->
+
+(* ----------------------------EVALUATION FOR AND---------------------------------- *)
+  | TmAnd(fi,TmTrue(_),v2) when isValBool v2 ->
       v2
   | TmAnd(fi,TmFalse(_),v2) when isValBool v2 ->
       TmFalse(dummyinfo)
@@ -96,11 +106,21 @@ let rec eval1 t = match t with
   | TmAnd(fi,t1,t2) ->
       let t1' = eval1 t1 in
       TmAnd(fi,t1',t2)
-(* ----------------------------EVALUATION FOR AND--------------------------------- *)
-
 (* -------------------------------------------------------------------------------- *)
+
+(* ----------------------------EVALUATION FOR SWITCH---------------------------------- *)
+  | TmSwitch(_,t1,t2,t3) when isValZero t1 ->
+      t2
+  | TmSwitch(_,t1,t2,t3) when isValSuccZero t1 ->
+      t3
+  | TmSwitch(fi,t1,t2,t3) ->
+      let t1' = eval1 t1 in
+      TmSwitch(fi,t1',t2,t3)
+(* -------------------------------------------------------------------------------- *)
+
   | _ -> 
       raise NoRuleApplies
+
 
 let rec eval t =
   try let t' = eval1 t
