@@ -78,6 +78,10 @@ let rec eval1 t = match t with
       TmPred(fi, t1')
   | TmIsZero(_,TmZero(_)) ->
       TmTrue(dummyinfo)
+  | TmIsZero(_,TmSucc(_,TmPred(_, TmZero(_)))) ->
+      TmTrue(dummyinfo)
+  | TmIsZero(_,TmPred(_,TmSucc(_, TmZero(_)))) ->
+      TmTrue(dummyinfo)
   | TmIsZero(_,nv1) when (isnumericval nv1) ->
       TmFalse(dummyinfo)
   | TmIsZero(fi,t1) ->
